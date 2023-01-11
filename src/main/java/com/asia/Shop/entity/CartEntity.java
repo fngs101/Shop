@@ -1,5 +1,6 @@
 package com.asia.Shop.entity;
 
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
-
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "cart")
