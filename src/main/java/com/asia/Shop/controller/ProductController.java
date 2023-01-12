@@ -1,9 +1,9 @@
 package com.asia.Shop.controller;
 
 import com.asia.Shop.service.ProductService;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class ProductController
 {
     private ProductService productService;

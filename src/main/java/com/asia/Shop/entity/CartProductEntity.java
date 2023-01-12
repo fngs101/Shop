@@ -4,16 +4,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
-@Data
-@NoArgsConstructor
+
 @Entity
-@Table(name = "cart")
-public class CartEntity
+@NoArgsConstructor
+@Data
+public class CartProductEntity
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(fetch= FetchType.EAGER)
-    private List<CartProductEntity> products;
+    @ManyToOne
+    private ProductEntity productEntity;
+    private int amount;
 }
