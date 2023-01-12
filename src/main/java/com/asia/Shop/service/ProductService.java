@@ -25,4 +25,18 @@ public class ProductService
     {
         return productRepository.findAll();
     }
+
+    public void deleteProduct(Long id)
+    {
+        ProductEntity productEntity = productRepository.findById(id).get();
+        productRepository.delete(productEntity);
+    }
+
+    public void updateProduct(ProductEntity productEntity)
+    {
+        productRepository.findById(productEntity.getId()).orElseThrow();
+
+        productRepository.save(productEntity);
+    }
+
 }
