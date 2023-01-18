@@ -26,4 +26,17 @@ public class OrderService
     {
         return orderRepository.findAll();
     }
+
+    public void updateOrder(OrderEntity orderEntity)
+    {
+        orderRepository.findById(orderEntity.getId()).orElseThrow();
+
+        orderRepository.save(orderEntity);
+    }
+
+    public void deleteOrder(Long id)
+    {
+        OrderEntity orderEntity = orderRepository.findById(id).get();
+        orderRepository.delete(orderEntity);
+    }
 }
