@@ -18,25 +18,25 @@ public class ProductController
         this.productService = productService;
     }
 
-    @PostMapping("api/products")
+    @PostMapping("/api/products")
     public void addProduct(@RequestBody ProductEntity productEntity)
     {
         productService.addProduct(productEntity);
     }
 
-    @GetMapping("api/products")
+    @GetMapping("/api/products")
     public List<ProductEntity> getProducts()
     {
         return productService.getProducts();
     }
 
-    @DeleteMapping("api/products/{id}")
+    @DeleteMapping("/api/products/{id}")
     public void deleteProduct(@PathVariable Long id)
     {
         productService.deleteProduct(id);
     }
 
-    @PutMapping("api/products/{id}")
+    @PutMapping("/api/products/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductEntity productEntity)
     {
         productEntity.setId(id);
