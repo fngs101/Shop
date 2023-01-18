@@ -17,7 +17,15 @@ public class CartService
         this.cartRepository = cartRepository;
     }
 
+    public List<CartEntity> getCarts()
+    {
+        return cartRepository.findAll();
+    }
 
+    public CartEntity getCartById(Long id)
+    {
+        return cartRepository.findById(id).get();
+    }
     public List<CartProductEntity> getProductsInCart(Long cartId)
     {
        CartEntity cart = cartRepository.findById(cartId).get();
