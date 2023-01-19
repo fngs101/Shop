@@ -1,7 +1,10 @@
 package com.asia.Shop.controller;
 
+import com.asia.Shop.dto.ErrorDto;
 import com.asia.Shop.entity.ProductEntity;
+import com.asia.Shop.exception.ProductServiceException;
 import com.asia.Shop.service.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +22,18 @@ public class ProductController
     }
 
     @PostMapping("/api/products")
-    public void addProduct(@RequestBody ProductEntity productEntity)
+    public ResponseEntity<ErrorDto> addProduct(@RequestBody ProductEntity productEntity)
     {
-        productService.addProduct(productEntity);
+        try
+        {
+            productService.addProduct(productEntity);
+            return new ResponseEntity<>(HttpStatus.valueOf(200));
+        }
+        catch (ProductServiceException e)
+        {
+           return new ResponseEntity<>(new ErrorDto(e.getMessage()),HttpStatus.valueOf(400));
+        }
+
     }
 
     @GetMapping("/api/products")

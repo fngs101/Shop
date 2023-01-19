@@ -31,4 +31,9 @@ public class CartService
        CartEntity cart = cartRepository.findById(cartId).get();
        return cart.getProducts();
     }
+
+    public void addCart(CartEntity cartEntity)
+    {
+        cartRepository.save(cartEntity);
+    }
 }

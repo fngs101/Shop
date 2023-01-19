@@ -3,9 +3,7 @@ package com.asia.Shop.controller;
 import com.asia.Shop.entity.CartEntity;
 import com.asia.Shop.entity.CartProductEntity;
 import com.asia.Shop.service.CartService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,5 +33,11 @@ public class CartController
     public List<CartProductEntity> getListOfProductsInCart(@PathVariable Long id)
     {
         return cartService.getProductsInCart(id);
+    }
+
+    @PostMapping("/api/carts")
+    public void addCart(@RequestBody CartEntity cartEntity)
+    {
+        cartService.addCart(cartEntity);
     }
 }

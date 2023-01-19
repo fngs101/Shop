@@ -1,6 +1,7 @@
 package com.asia.Shop.service;
 
 import com.asia.Shop.entity.ProductEntity;
+import com.asia.Shop.exception.ProductServiceException;
 import com.asia.Shop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class ProductService
 
     public void addProduct(ProductEntity product)
     {
+        if(product.getPrice() == null)
+        {
+            throw new ProductServiceException("No price specified");
+        }
         productRepository.save(product);
     }
 
