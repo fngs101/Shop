@@ -33,13 +33,13 @@ public class ProductService
 
     public void deleteProduct(Long id)
     {
-        ProductEntity productEntity = productRepository.findById(id).get();
+        ProductEntity productEntity = productRepository.findById(id).orElseThrow(() -> new ProductServiceException("There is no product with such ID"));
         productRepository.delete(productEntity);
     }
 
     public void updateProduct(ProductEntity productEntity)
     {
-        productRepository.findById(productEntity.getId()).orElseThrow();
+        productRepository.findById(productEntity.getId()).orElseThrow(() -> new ProductServiceException("There is no product with such ID"));
 
         productRepository.save(productEntity);
     }

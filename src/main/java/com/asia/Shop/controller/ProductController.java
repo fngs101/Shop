@@ -28,24 +28,43 @@ public class ProductController
         {
             productService.addProduct(productEntity);
             return new ResponseEntity<>(HttpStatus.valueOf(200));
-        }
-        catch (ProductServiceException e)
+        } catch (ProductServiceException e)
         {
-           return new ResponseEntity<>(new ErrorDto(e.getMessage()),HttpStatus.valueOf(400));
+            return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.valueOf(400));
         }
 
     }
 
+    //opcja nizej pozwala na wszystko, body, status, headers?
     @GetMapping("/api/products")
-    public List<ProductEntity> getProducts()
+    public ResponseEntity<List<ProductEntity>> getProducts()
     {
-        return productService.getProducts();
+        List<ProductEntity> products = productService.getProducts();
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
+
+    //opcja nizej tylko dla prostych gettow, malo flexibility?
+//    @GetMapping("/api/products")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<ProductEntity> getProductsResponseStatusVersion()
+//    {
+//        List<ProductEntity> products = productService.getProducts();
+//        return products;
+//    }
 
     @DeleteMapping("/api/products/{id}")
-    public void deleteProduct(@PathVariable Long id)
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id)
     {
-        productService.deleteProduct(id);
+        try
+        {
+            productService.deleteProduct(id);
+            return ResponseEntity.ok("Product deleted");
+        }
+        catch(ProductServiceException e)
+        {
+            return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.valueOf(404));
+        }
+
     }
 
     @PutMapping("/api/products/{id}")
@@ -56,12 +75,12 @@ public class ProductController
         {
             productService.updateProduct(productEntity);
         }
-        catch(NoSuchElementException e)
+        catch (ProductServiceException e)
         {
-           return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.valueOf(404));
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Product updated");
     }
 
 }
