@@ -17,5 +17,5 @@ public class OrderEntity
     private CartEntity cart;
     private String clientName;
     private String clientAddress;
-    private int orderNumber;
+    private Integer orderNumber;
 }

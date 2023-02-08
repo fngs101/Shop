@@ -1,8 +1,11 @@
 package com.asia.Shop.controller;
 
+import com.asia.Shop.dto.ErrorDto;
 import com.asia.Shop.entity.OrderEntity;
+import com.asia.Shop.exception.OrderServiceException;
 import com.asia.Shop.service.OrderService;
 import org.hibernate.criterion.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,36 +29,55 @@ public class OrderController
     }
 
     @GetMapping("api/orders")
-    public List<OrderEntity> getOrders()
+    public ResponseEntity<List<OrderEntity>> getOrders()
     {
-        return orderService.getOrders();
+        List<OrderEntity> orders = orderService.getOrders();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @PostMapping("api/orders")
-    public void addOrder(@RequestBody OrderEntity orderEntity)
+    public ResponseEntity<ErrorDto> addOrder(@RequestBody OrderEntity orderEntity)
     {
-        orderService.addOrder(orderEntity);
+        try
+        {
+            orderService.addOrder(orderEntity);
+            return new ResponseEntity<>(HttpStatus.valueOf(200));
+        }
+        catch(OrderServiceException e)
+        {
+            return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.valueOf(400));
+        }
+
     }
 
     @PutMapping("api/orders/{id}")
-    public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody OrderEntity orderEntity)
+    public ResponseEntity<ErrorDto> updateOrder(@PathVariable Long id, @RequestBody OrderEntity orderEntity)
     {
         orderEntity.setId(id);
         try
         {
             orderService.updateOrder(orderEntity);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (NoSuchElementException e)
         {
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.valueOf(400));
         }
 
-        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("api/orders/{id}")
-    public void deleteOrder(@PathVariable Long id)
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id)
     {
-        orderService.deleteOrder(id);
+        try
+        {
+            orderService.deleteOrder(id);
+            //uzywam tej wersji zeby dodatkowo message dac?
+            return ResponseEntity.ok("Order deleted");
+        }
+        catch(OrderServiceException e)
+        {
+            return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.valueOf(404));
+        }
     }
 }
