@@ -77,7 +77,7 @@ public class ProductController
         }
         catch (ProductServiceException e)
         {
-            return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.valueOf(404));
+            return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.valueOf(400));
         }
 
         return ResponseEntity.ok("Product updated");
