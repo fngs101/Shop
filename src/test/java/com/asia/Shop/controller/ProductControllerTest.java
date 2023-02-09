@@ -30,6 +30,7 @@ class ProductControllerTest
     ProductService productService;
     @InjectMocks
     ProductController productController;
+    //do robienia zapytan do controllera
     MockMvc mockMvc;
 
     @BeforeEach
