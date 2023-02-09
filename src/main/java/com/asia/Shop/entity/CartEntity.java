@@ -15,5 +15,5 @@ public class CartEntity
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany(fetch= FetchType.EAGER)
-    private List<CartProductEntity> products;
+    private List<CartProductEntity> cartProducts;
 }

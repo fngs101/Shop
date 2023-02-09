@@ -2,6 +2,7 @@ package com.asia.Shop.service;
 
 import com.asia.Shop.entity.CartEntity;
 import com.asia.Shop.entity.CartProductEntity;
+import com.asia.Shop.exception.CartServiceException;
 import com.asia.Shop.repository.CartRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +25,12 @@ public class CartService
 
     public CartEntity getCartById(Long id)
     {
-        return cartRepository.findById(id).get();
+        return cartRepository.findById(id).orElseThrow(() -> new CartServiceException("No cart with such ID"));
     }
     public List<CartProductEntity> getProductsInCart(Long cartId)
     {
-       CartEntity cart = cartRepository.findById(cartId).get();
-       return cart.getProducts();
+       CartEntity cart = cartRepository.findById(cartId).orElseThrow(() -> new CartServiceException("No cart with such ID"));
+       return cart.getCartProducts();
     }
 
     public void addCart(CartEntity cartEntity)

@@ -2,7 +2,10 @@ package com.asia.Shop.controller;
 
 import com.asia.Shop.entity.CartEntity;
 import com.asia.Shop.entity.CartProductEntity;
+import com.asia.Shop.exception.CartServiceException;
 import com.asia.Shop.service.CartService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,21 +21,39 @@ public class CartController
     }
 
     @GetMapping("api/carts")
-    public List<CartEntity> getCarts()
+    public ResponseEntity<List<CartEntity>> getCarts()
     {
-        return cartService.getCarts();
+        List<CartEntity> carts =  cartService.getCarts();
+        return new ResponseEntity<>(carts, HttpStatus.OK);
     }
 
     @GetMapping("api/carts/{id}")
-    public CartEntity getCartById(@PathVariable Long id)
+    public ResponseEntity<CartEntity> getCartById(@PathVariable Long id)
     {
-        return cartService.getCartById(id);
+        try
+        {
+            CartEntity cart = cartService.getCartById(id);
+            return new ResponseEntity<>(cart, HttpStatus.valueOf(200));
+        }
+        catch(CartServiceException e)
+        {
+            return new ResponseEntity<>(HttpStatus.valueOf(404));
+        }
+
     }
 
     @GetMapping("api/carts/{id}/products")
-    public List<CartProductEntity> getListOfProductsInCart(@PathVariable Long id)
+    public ResponseEntity<List<CartProductEntity>> getListOfProductsInCart(@PathVariable Long id)
     {
-        return cartService.getProductsInCart(id);
+        try
+        {
+            List<CartProductEntity> productsInCart = cartService.getProductsInCart(id);
+            return new ResponseEntity<>(productsInCart, HttpStatus.valueOf(200));
+        }
+        catch(CartServiceException e)
+        {
+            return new ResponseEntity<>(HttpStatus.valueOf(404));
+        }
     }
 
     @PostMapping("/api/carts")
