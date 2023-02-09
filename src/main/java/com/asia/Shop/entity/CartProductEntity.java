@@ -15,5 +15,5 @@ public class CartProductEntity
     private Long id;
     @ManyToOne
     private ProductEntity productEntity;
-    private int amount;
+    private Integer amount;
 }
